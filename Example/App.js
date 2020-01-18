@@ -15,39 +15,87 @@ import {
   Button,
 } from 'react-native';
 
-import { RNAddShortcuts } from 'react-native-add-shortcuts';
+import {RNAddShortcuts} from 'react-native-add-shortcuts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class App extends Component<{}> {
-  _onPress = () => {
-    let copy = (
-      <Icon name="copy" size={30} color="#000000" family={'FontAwesome'} />
-    );
-
-    // RNAddShortcuts.AddPinnedShortcut({
-    //   name: 'Copy',
-    //   icon: copy,
-    //   link: 'app:copy'
-    // });
-
-    RNAddShortcuts.AddDynamicShortcut({
-      name: 'Copy',
-      icon: copy,
-      link: 'app:copy',
-    });
-  };
-
   render() {
     return (
       <ImageBackground
         source={require('./assets/dark.jpg')}
         style={styles.backgroundImage}>
         <Button
-          title={'Tap Here'}
+          title={'Add Dynamic Shortcut'}
           onPress={() => {
-            this._onPress()
-          }}
-        ></Button>
+            let copy = (
+              <Icon
+                name="copy"
+                size={30}
+                color="#000000"
+                family={'FontAwesome'}
+              />
+            );
+
+            RNAddShortcuts.AddDynamicShortcut({
+              label: 'Copy',
+              description: 'Copy Desc',
+              icon: copy,
+              link: 'app:copy',
+              onDone: () => {
+                console.log('Shortcut Added');
+              },
+            });
+          }}></Button>
+        <Button
+          title={'Add Pinned Shortcut'}
+          onPress={() => {
+            let copy = (
+              <Icon
+                name="copy"
+                size={30}
+                color="#000000"
+                family={'FontAwesome'}
+              />
+            );
+
+            RNAddShortcuts.AddPinnedShortcut({
+              label: 'Copy',
+              description: 'Copy Desc',
+              icon: copy,
+              link: 'app:copy',
+              onDone: () => {
+                console.log('Shortcut Added');
+              },
+            });
+          }}></Button>
+        <Button
+          title={'Get Dynamic Shortcuts'}
+          onPress={() => {
+            RNAddShortcuts.GetDynamicShortcuts({
+              onDone: shortcuts => {
+                console.log('Shortcuts: ' + shortcuts);
+              },
+            });
+          }}></Button>
+        <Button
+          title={'Remove All Dynamic Shortcuts'}
+          onPress={() => {
+            RNAddShortcuts.RemoveAllDynamicShortcuts({
+              onDone: () => {
+                console.log('All Dynamic Shortcuts Removed');
+              },
+            });
+          }}></Button>
+        <Button
+          title={'Pop Dynamic Shortcuts'}
+          onPress={() => {
+            RNAddShortcuts.PopDynamicShortcuts({
+              shortcuts: ['Copy'],
+              onDone: () => {
+                console.log('Pop Dynamic Shortcuts');
+              },
+            });
+          }}></Button>
       </ImageBackground>
     );
   }
