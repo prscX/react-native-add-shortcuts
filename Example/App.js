@@ -25,28 +25,6 @@ export default class App extends Component<{}> {
         source={require('./assets/dark.jpg')}
         style={styles.backgroundImage}>
         <Button
-          title={'Add Dynamic Shortcut'}
-          onPress={() => {
-            let copy = (
-              <Icon
-                name="copy"
-                size={30}
-                color="#000000"
-                family={'FontAwesome'}
-              />
-            );
-
-            RNAddShortcuts.AddDynamicShortcut({
-              label: 'Copy',
-              description: 'Copy Desc',
-              icon: copy,
-              link: 'app:copy',
-              onDone: () => {
-                console.log('Shortcut Added');
-              },
-            });
-          }}></Button>
-        <Button
           title={'Add Pinned Shortcut'}
           onPress={() => {
             let copy = (
@@ -62,6 +40,28 @@ export default class App extends Component<{}> {
               label: 'Copy',
               description: 'Copy Desc',
               icon: copy,
+              link: 'app:copy',
+              onDone: () => {
+                console.log('Shortcut Added');
+              },
+            });
+          }}></Button>
+        <Button
+          title={'Add Dynamic Shortcut'}
+          onPress={() => {
+            let copy = (
+              <Icon
+                name="copy"
+                size={30}
+                color="#000000"
+                family={'FontAwesome'}
+              />
+            );
+
+            RNAddShortcuts.AddDynamicShortcut({
+              label: 'Copy',
+              description: 'Copy Desc',
+              icon: 'copy.png',
               link: 'app:copy',
               onDone: () => {
                 console.log('Shortcut Added');
