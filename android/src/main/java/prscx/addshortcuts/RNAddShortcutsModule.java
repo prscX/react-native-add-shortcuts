@@ -1,5 +1,5 @@
 
-package com.reactlibrary;
+package prscx.addshortcuts;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -46,7 +46,6 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     return "RNAddShortcuts";
   }
 
-
   @ReactMethod
   @TargetApi(26)
   private void AddPinnedShortcut(ReadableMap shortcut, final Callback onDone, final Callback onCancel) {
@@ -60,7 +59,15 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     ReadableMap icon = shortcut.getMap("icon");
     String link = shortcut.getString("link");
 
-    BitmapDrawable drawable = (BitmapDrawable) generateVectorIcon(icon);
+    BitmapDrawable drawable = null;
+    try {
+      Class<?> clazz = Class.forName("prscx.imagehelper.RNImageHelperModule"); // Controller A or B
+      Class params[] = { ReadableMap.class };
+      Method method = clazz.getDeclaredMethod("GenerateImage", params);
+
+      drawable = (Drawable) method.invoke(null, icon);
+    } catch (Exception e) {
+    }
 
     ShortcutManager mShortcutManager = getReactApplicationContext().getSystemService(ShortcutManager.class);
 
@@ -70,12 +77,8 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     intent.setAction(Intent.ACTION_VIEW);
     intent.setData(Uri.parse(link));
 
-    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label)
-            .setShortLabel(label)
-            .setLongLabel(description)
-            .setIntent(intent)
-            .setIcon(Icon.createWithBitmap(drawable.getBitmap()))
-            .build();
+    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+        .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
 
     if (mShortcutManager != null) {
       mShortcutManager.requestPinShortcut(shortcutInfo, null);
@@ -86,7 +89,6 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
 
     onCancel.invoke();
   }
-
 
   @ReactMethod
   @TargetApi(25)
@@ -103,7 +105,15 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     ReadableMap icon = shortcut.getMap("icon");
     String link = shortcut.getString("link");
 
-    BitmapDrawable drawable = (BitmapDrawable) generateVectorIcon(icon);
+    BitmapDrawable drawable = null;
+    try {
+      Class<?> clazz = Class.forName("prscx.imagehelper.RNImageHelperModule"); // Controller A or B
+      Class params[] = { ReadableMap.class };
+      Method method = clazz.getDeclaredMethod("GenerateImage", params);
+
+      drawable = (Drawable) method.invoke(null, icon);
+    } catch (Exception e) {
+    }
 
     Intent shortcutIntent = new Intent(getReactApplicationContext(), RNAddShortcutsModule.class);
     shortcutIntent.setAction(Intent.ACTION_MAIN);
@@ -111,12 +121,8 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     intent.setAction(Intent.ACTION_VIEW);
     intent.setData(Uri.parse(link));
 
-    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label)
-      .setShortLabel(label)
-      .setLongLabel(description)
-      .setIntent(intent)
-      .setIcon(Icon.createWithBitmap(drawable.getBitmap()))
-      .build();
+    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+        .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
 
     List<ShortcutInfo> list = new ArrayList<>();
     list.add(shortcutInfo);
@@ -130,7 +136,6 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
 
     onCancel.invoke();
   }
-
 
   @ReactMethod
   @TargetApi(25)
@@ -169,7 +174,8 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
       return;
     }
 
-    List<ShortcutInfo> shortcuts = getReactApplicationContext().getSystemService(ShortcutManager.class).getDynamicShortcuts();
+    List<ShortcutInfo> shortcuts = getReactApplicationContext().getSystemService(ShortcutManager.class)
+        .getDynamicShortcuts();
     List finalShortcuts = new ArrayList(shortcuts.size());
 
     for (ShortcutInfo shortcut : shortcuts) {
@@ -186,56 +192,5 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
 
   private boolean isShortcutSupported() {
     return Build.VERSION.SDK_INT >= 25;
-  }
-
-  @TargetApi(21)
-  private Drawable generateVectorIcon(ReadableMap icon) {
-    try {
-      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-      StrictMode.setThreadPolicy(policy);
-
-      String family = icon.getString("family");
-      String name = icon.getString("name");
-      String glyph = icon.getString("glyph");
-      String color = icon.getString("color");
-      int size = icon.getInt("size");
-
-      if (name != null && name.length() > 0 && name.contains(".")) {
-        Resources resources = getReactApplicationContext().getResources();
-        name = name.substring(0, name.lastIndexOf("."));
-
-        final int resourceId = resources.getIdentifier(name, "drawable", getReactApplicationContext().getPackageName());
-        return getReactApplicationContext().getDrawable(resourceId);
-      }
-
-      float scale = getReactApplicationContext().getResources().getDisplayMetrics().density;
-      String scaleSuffix = "@" + (scale == (int) scale ? Integer.toString((int) scale) : Float.toString(scale)) + "x";
-      int fontSize = Math.round(size * scale);
-
-      Typeface typeface = ReactFontManager.getInstance().getTypeface(family, 0, getReactApplicationContext().getAssets());
-      Paint paint = new Paint();
-      paint.setTypeface(typeface);
-
-      if (color != null && color.length() == 4) {
-        color = color + color.substring(1);
-      }
-
-      if (color != null && color.length() > 0) {
-        paint.setColor(Color.parseColor(color));
-      }
-
-      paint.setTextSize(fontSize);
-      paint.setAntiAlias(true);
-      Rect textBounds = new Rect();
-      paint.getTextBounds(glyph, 0, glyph.length(), textBounds);
-
-      Bitmap bitmap = Bitmap.createBitmap(textBounds.width(), textBounds.height(), Bitmap.Config.ARGB_8888);
-      Canvas canvas = new Canvas(bitmap);
-      canvas.drawText(glyph, -textBounds.left, -textBounds.top, paint);
-
-      return new BitmapDrawable(getReactApplicationContext().getResources(), bitmap);
-    } catch (Exception exception) {
-      return null;
-    }
   }
 }

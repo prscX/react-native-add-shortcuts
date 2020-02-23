@@ -1,23 +1,23 @@
 {
-    "name": "react-native-add-shortcuts",
-    "version": "0.0.1",
-    "description": "ReactNative: Native Add Shortcuts",
-    "homepage": "https://github.com/prscX/react-native-add-shortcuts.git",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/prscX/react-native-add-shortcuts.git"
-    },
-    "main": "js/RNAddShortcuts.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "react-native"
-    ],
-    "author": "Pranav Raj Singh Chauhan",
-    "license": "Apache License",
-    "dependencies": {},
-    "devDependencies": {
-        "prettier-pack": "0.0.8"
-    }
+  "name": "react-native-add-shortcuts",
+  "version": "1.0.0",
+  "description": "ReactNative: Native Add Shortcuts",
+  "homepage": "https://github.com/prscX/react-native-add-shortcuts.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prscX/react-native-add-shortcuts.git"
+  },
+  "main": "RNAddShortcuts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": "Pranav Raj Singh Chauhan",
+  "license": "Apache License",
+  "dependencies": {},
+  "devDependencies": {
+    "prettier-pack": "0.0.8"
+  }
 }

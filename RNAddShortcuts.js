@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { ViewPropTypes, NativeModules, Platform } from "react-native";
 import PropTypes from "prop-types";
 
-import RNVectorHelper from "./RNVectorHelper";
+import RNImageHelper from "react-native-image-helper";
 
 const { RNAddShortcuts } = NativeModules;
 
@@ -17,7 +17,7 @@ class AddShortcuts extends PureComponent {
     if (props.icon && props.icon.props) {
       props.icon = props.icon.props;
 
-      let vectorIcon = RNVectorHelper.Resolve(
+      let vectorIcon = RNImageHelper.Resolve(
         props.icon.family,
         props.icon.name
       );
@@ -47,7 +47,7 @@ class AddShortcuts extends PureComponent {
     if (props.icon && props.icon.props) {
       props.icon = props.icon.props;
 
-      let vectorIcon = RNVectorHelper.Resolve(
+      let vectorIcon = RNImageHelper.Resolve(
         props.icon.family,
         props.icon.name
       );
