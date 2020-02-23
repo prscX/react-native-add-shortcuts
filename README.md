@@ -20,6 +20,14 @@ This library is a React Native bridge around native API's providing capability t
 
 `$ npm install react-native-add-shortcuts --save`
 
+- Add `react-native-image-helper` your app package.json
+
+`$ npm install react-native-image-helper --save`
+
+- Add `react-native-vector-icons` to your app package.json and configure it as per their installation steps
+
+`$ npm install react-native-vector-icons --save`
+
 - **iOS**
 
 > **iOS Prerequisite:** Please make sure `CocoaPods` is installed on your system
