@@ -28,6 +28,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.views.text.ReactFontManager;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
       Class params[] = { ReadableMap.class };
       Method method = clazz.getDeclaredMethod("GenerateImage", params);
 
-      drawable = (Drawable) method.invoke(null, icon);
+      drawable = (BitmapDrawable) method.invoke(null, icon);
     } catch (Exception e) {
     }
 
@@ -111,7 +112,7 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
       Class params[] = { ReadableMap.class };
       Method method = clazz.getDeclaredMethod("GenerateImage", params);
 
-      drawable = (Drawable) method.invoke(null, icon);
+      drawable = (BitmapDrawable) method.invoke(null, icon);
     } catch (Exception e) {
     }
 
