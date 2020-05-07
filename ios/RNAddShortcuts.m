@@ -22,16 +22,19 @@ RCT_EXPORT_METHOD(AddDynamicShortcut:(nonnull NSDictionary *)props onDone:(RCTRe
         NSString *label = [props objectForKey: @"label"];
         NSString *description = [props objectForKey: @"description"];
         NSDictionary *icon = [props objectForKey: @"icon"];
-
-        NSMutableArray *shortcutItem = [NSMutableArray new];
-        [shortcutItem addObject:[[UIApplicationShortcutItem alloc] initWithType: label
+        NSString *info = [props objectForKey:@"link"];
+        
+        UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType: label
                                                                   localizedTitle:label
                                                                localizedSubtitle:description
                                                                             icon:[UIApplicationShortcutIcon iconWithTemplateImageName: [icon objectForKey: @"name"]]
-                                                                        userInfo:nil]];
+                                                                                         userInfo:@{@"applicationShortcutUserInfoIconKey":info}];
+        
+        NSMutableArray<UIApplicationShortcutItem *> *shortcuts = [UIApplication sharedApplication].shortcutItems;
+        [shortcuts addObject:shortcutItem];
 
         
-      [UIApplication sharedApplication].shortcutItems = shortcutItem;
+      [UIApplication sharedApplication].shortcutItems = shortcuts;
     
         onDone(@[]);
     });
@@ -66,7 +69,6 @@ RCT_EXPORT_METHOD(RemoveAllDynamicShortcuts:(RCTResponseSenderBlock)onDone onCan
     onDone(@[]);
 }
 
-
 RCT_EXPORT_METHOD(PopDynamicShortcuts:(nonnull NSDictionary *)props onDone:(RCTResponseSenderBlock)onDone onCancel:(RCTResponseSenderBlock)onCancel) {
     if (![self isSupported]) {
         onCancel(@[]);
@@ -76,12 +78,12 @@ RCT_EXPORT_METHOD(PopDynamicShortcuts:(nonnull NSDictionary *)props onDone:(RCTR
     NSArray *popShortcuts = [props objectForKey: @"shortcuts"];
     
     NSArray<UIApplicationShortcutItem *> *shortcuts = [UIApplication sharedApplication].shortcutItems;
-    NSMutableArray<UIApplicationShortcutItem *> *updateShortcuts = [[NSMutableArray alloc] init];
+    NSMutableArray<UIApplicationShortcutItem *> *updateShortcuts = [[NSMutableArray alloc] initWithArray:shortcuts];
     
     for (NSString *popShortcut in popShortcuts) {
         for (UIApplicationShortcutItem *shortcutItem in shortcuts) {
-            if (![shortcutItem.type isEqualToString: popShortcut]) {
-                [updateShortcuts addObject: shortcutItem];
+            if ([shortcutItem.type isEqualToString: popShortcut]) {
+                [updateShortcuts removeObject: shortcutItem];
             }
         }
     }
@@ -90,7 +92,6 @@ RCT_EXPORT_METHOD(PopDynamicShortcuts:(nonnull NSDictionary *)props onDone:(RCTR
 
     onDone(@[]);
 }
-
 
 - (BOOL) isSupported {
     BOOL supported = [[UIApplication sharedApplication].delegate.window.rootViewController.traitCollection forceTouchCapability] == UIForceTouchCapabilityAvailable;
