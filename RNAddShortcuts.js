@@ -6,7 +6,7 @@ import RNImageHelper from "react-native-image-helper";
 
 const { RNAddShortcuts } = NativeModules;
 
-let _initialAction = RNAddShortcuts && RNAddShortcuts.initialAction;
+let _initialShortcut = RNAddShortcuts && RNAddShortcuts.initialShortcut;
 
 class AddShortcuts extends PureComponent {
   static propTypes = {
@@ -111,10 +111,10 @@ class AddShortcuts extends PureComponent {
         
   static PopInitialAction() {
     return new Promise((resolve) => {
-      let initialAction = _initialAction;
-      _initialAction = null;
+      let initialShortcut = _initialShortcut;
+      _initialShortcut = null;
 
-      resolve(initialAction);
+      resolve(initialShortcut);
     })
   }
 }
