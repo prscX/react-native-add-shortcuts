@@ -9,4 +9,6 @@
 
 @interface RNAddShortcuts : NSObject <RCTBridgeModule>
 
++(void) onShortcutItemPress:(UIApplicationShortcutItem *) shortcutItem completionHandler:(void (^)(BOOL succeeded)) completionHandler;
+
 @end
