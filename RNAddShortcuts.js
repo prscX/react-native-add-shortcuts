@@ -113,6 +113,7 @@ class AddShortcuts extends PureComponent {
     return new Promise((resolve) => {
       let initialAction = _initialAction;
       _initialAction = null;
+
       resolve(initialAction);
     })
   }
