@@ -11,6 +11,7 @@ NSString *const RCTShortcutItemClicked = @"ShortcutItemClicked";
 
 NSDictionary *RNShortcutItem(UIApplicationShortcutItem *item) {
     if (!item) return nil;
+
     return @{
         @"type": item.type,
         @"title": item.localizedTitle,
@@ -39,6 +40,7 @@ RCT_EXPORT_MODULE()
                                                      name:RCTShortcutItemClicked
                                                    object:nil];
     }
+
     return self;
 }
 
