@@ -18,6 +18,8 @@ import {
 import {RNAddShortcuts} from 'react-native-add-shortcuts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import paste from './assets/paste.png';
+
 export default class App extends Component<{}> {
   render() {
     return (
@@ -29,7 +31,7 @@ export default class App extends Component<{}> {
           onPress={() => {
             let copy = (
               <Icon
-                name="copy"
+                name={'paste.png'}
                 size={30}
                 color="#000000"
                 family={'FontAwesome'}
@@ -37,10 +39,10 @@ export default class App extends Component<{}> {
             );
 
             RNAddShortcuts.AddPinnedShortcut({
-              label: 'Copy',
+              label: 'Paste',
               description: 'Copy Desc',
-              icon: copy,
-              link: 'app:copy',
+              icon: paste,
+              link: {url: 'app:copy'},
               onDone: () => {
                 console.log('Shortcut Added');
               },
@@ -72,7 +74,7 @@ export default class App extends Component<{}> {
           title={'Get Dynamic Shortcuts'}
           onPress={() => {
             RNAddShortcuts.GetDynamicShortcuts({
-              onDone: shortcuts => {
+              onDone: (shortcuts) => {
                 console.log('Shortcuts: ' + shortcuts);
               },
             });

@@ -78,8 +78,14 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     intent.setAction(Intent.ACTION_VIEW);
     intent.setData(Uri.parse(link.getString("url")));
 
-    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
-        .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
+    ShortcutInfo shortcutInfo = null;
+    if (drawable != null) {
+      shortcutInfo= new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+              .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
+    } else {
+      shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+              .setLongLabel(description).setIntent(intent).build();
+    }
 
     if (mShortcutManager != null) {
       mShortcutManager.requestPinShortcut(shortcutInfo, null);

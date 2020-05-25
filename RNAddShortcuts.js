@@ -3,6 +3,7 @@ import { ViewPropTypes, NativeModules, Platform } from "react-native";
 import PropTypes from "prop-types";
 
 import RNImageHelper from "react-native-image-helper";
+import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 
 const { RNAddShortcuts } = NativeModules;
 
@@ -10,7 +11,7 @@ let _initialShortcut = RNAddShortcuts && RNAddShortcuts.initialShortcut;
 
 class AddShortcuts extends PureComponent {
   static propTypes = {
-    ...ViewPropTypes
+    ...ViewPropTypes,
   };
 
   static defaultProps = {};
@@ -25,13 +26,29 @@ class AddShortcuts extends PureComponent {
       );
       props.icon = Object.assign({}, props.icon, vectorIcon);
     } else if (props.icon !== undefined) {
-      props.icon = {
-        name: props.icon,
-        family: "",
-        glyph: "",
-        color: "",
-        size: 0
-      };
+      if (typeof props.icon === "number") {
+        props.icon = {
+          name: "",
+          url: resolveAssetSource(props.icon),
+          family: "",
+          glyph: "",
+          color: "",
+          size: 0,
+        };
+      } else if (typeof props.icon === "string") {
+        props.icon = {
+          name: props.icon,
+          url: "",
+          family: "",
+          glyph: "",
+          color: "",
+          size: 0,
+        };
+      } else {
+        props.icon = {};
+      }
+    } else {
+      props.icon = {};
     }
 
     RNAddShortcuts.AddDynamicShortcut(
@@ -55,13 +72,29 @@ class AddShortcuts extends PureComponent {
       );
       props.icon = Object.assign({}, props.icon, vectorIcon);
     } else if (props.icon !== undefined) {
-      props.icon = {
-        name: props.icon,
-        family: "",
-        glyph: "",
-        color: "",
-        size: 0
-      };
+      if (typeof props.icon === "number") {
+        props.icon = {
+          name: "",
+          url: resolveAssetSource(props.icon),
+          family: "",
+          glyph: "",
+          color: "",
+          size: 0,
+        };
+      } else if (typeof props.icon === "string") {
+        props.icon = {
+          name: props.icon,
+          url: "",
+          family: "",
+          glyph: "",
+          color: "",
+          size: 0,
+        };
+      } else {
+        props.icon = {};
+      }
+    } else {
+      props.icon = {};
     }
 
     RNAddShortcuts.AddPinnedShortcut(
@@ -77,7 +110,7 @@ class AddShortcuts extends PureComponent {
 
   static GetDynamicShortcuts(props) {
     RNAddShortcuts.GetDynamicShortcuts(
-      shortcuts => {
+      (shortcuts) => {
         props.onDone?.(shortcuts);
       },
       () => {
@@ -108,14 +141,14 @@ class AddShortcuts extends PureComponent {
       }
     );
   }
-        
+
   static PopInitialAction() {
     return new Promise((resolve) => {
       let initialShortcut = _initialShortcut;
       _initialShortcut = null;
 
       resolve(initialShortcut);
-    })
+    });
   }
 }
 
