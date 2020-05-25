@@ -64,7 +64,7 @@ export default class App extends Component<{}> {
               label: 'Copy',
               description: 'Copy Desc',
               icon: 'copy.png',
-              link: 'app:copy',
+              link: {url: 'app:copy'},
               onDone: () => {
                 console.log('Shortcut Added');
               },

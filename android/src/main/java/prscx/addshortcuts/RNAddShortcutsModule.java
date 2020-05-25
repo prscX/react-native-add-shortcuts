@@ -80,11 +80,11 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
 
     ShortcutInfo shortcutInfo = null;
     if (drawable != null) {
-      shortcutInfo= new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
-              .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
+      shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+          .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
     } else {
       shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
-              .setLongLabel(description).setIntent(intent).build();
+          .setLongLabel(description).setIntent(intent).build();
     }
 
     if (mShortcutManager != null) {
@@ -110,7 +110,7 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     String label = shortcut.getString("label");
     String description = shortcut.getString("description");
     ReadableMap icon = shortcut.getMap("icon");
-    String link = shortcut.getString("link");
+    ReadableMap link = shortcut.getMap("link");
 
     BitmapDrawable drawable = null;
     try {
@@ -126,10 +126,16 @@ public class RNAddShortcutsModule extends ReactContextBaseJavaModule {
     shortcutIntent.setAction(Intent.ACTION_MAIN);
     Intent intent = new Intent();
     intent.setAction(Intent.ACTION_VIEW);
-    intent.setData(Uri.parse(link));
+    intent.setData(Uri.parse(link.getString("url")));
 
-    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
-        .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
+    ShortcutInfo shortcutInfo = null;
+    if (drawable != null) {
+      shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+          .setLongLabel(description).setIntent(intent).setIcon(Icon.createWithBitmap(drawable.getBitmap())).build();
+    } else {
+      shortcutInfo = new ShortcutInfo.Builder(getReactApplicationContext(), label).setShortLabel(label)
+          .setLongLabel(description).setIntent(intent).build();
+    }
 
     List<ShortcutInfo> list = new ArrayList<>();
     list.add(shortcutInfo);

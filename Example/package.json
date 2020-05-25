@@ -1,6 +1,6 @@
 {
   "name": "Example",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -13,7 +13,7 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-add-shortcuts": "../",
-    "react-native-image-helper": "0.0.2",
+    "react-native-image-helper": "0.0.3",
     "react-native-vector-icons": "6.6.0"
   },
   "devDependencies": {
